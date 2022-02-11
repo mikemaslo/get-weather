@@ -1,0 +1,512 @@
+/*Обнуление*/
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:focus, :active {
+    outline: none;
+}
+
+a:focus, a:active {
+    outline: none;
+}
+
+nav, footer, header, aside {
+    display: block;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+input, button, textarea {
+    font-family: inherit;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a, a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+/*--------------------*/
+
+@font-face {
+    font-family: 'Aktiv Grotesk';
+    src: local('Aktiv Grotesk Light'), local('Aktiv-Grotesk-Light'),
+    url('./fonts/AktivGroteskCorp-Light.woff2') format('woff2'),
+    url('./fonts/AktivGroteskCorp-Light.woff') format('woff'),
+    url('./fonts/AktivGroteskCorp-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    font-family: "Aktiv Grotesk", sans-serif, "Roboto Light";
+    color: #e9e9e9;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+figure#night-day {
+    margin: 0 auto;
+    font-size: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/starfield_stock_1.jpg);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+@keyframes suntrack {
+    from {
+        transform: rotate(.15turn);
+    }
+
+    to {
+        transform: rotate(-.85turn);
+    }
+}
+
+@keyframes moontrack {
+    from {
+        transform: rotate(.15turn);
+    }
+
+    to {
+        transform: rotate(-.85turn);
+    }
+}
+
+@keyframes sunpulse {
+    from {
+        box-shadow: 0 0 100px rgba(255, 255, 0, .4), 0 0 100px rgba(255, 255, 0, .4);
+    }
+
+    to {
+        box-shadow: 0 0 50px rgba(255, 255, 0, .8), 0 0 75px rgba(255, 255, 0, .8);
+    }
+}
+
+.sun {
+    width: 15vw;
+    height: 15vw;
+    background: #ff0;
+    background: radial-gradient(ellipse at center, #f90 0%, #fc0 60%, #ff0 100%);
+    border-radius: 100%;
+    position: absolute;
+    bottom: -7vw;
+    right: 7vw;
+    transform-origin: -28vw 7vw;
+    animation: suntrack 24s infinite forwards linear, sunpulse 2s alternate infinite;
+}
+
+.moon {
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/moon8.png);
+    width: 15vw;
+    height: 15vw;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90% 90%;
+    border-radius: 100%;
+    bottom: -7vw;
+    right: 7vw;
+    transform-origin: -28vw 7vw;
+    animation: moontrack 24s infinite backwards linear;
+    animation-delay: 12s;
+    opacity: .8;
+}
+
+.wrapper {
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 480px;
+    overflow: hidden;
+}
+
+.weather {
+    box-shadow: inset 0 0 10px 5px rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    min-width: 200px;
+    position: relative;
+    z-index: 10;
+    margin: 0 20px;
+    background-color: rgba(0, 0, 0, 0.50);
+}
+
+.temp__elem {
+    text-align: right;
+}
+
+.weather__temp {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    opacity: 0;
+}
+
+#weather-temp {
+    font-size: 56px;
+    margin: 0 5px;
+    flex-grow: 1;
+}
+
+.weather__container {
+    display: flex;
+}
+
+.weather__icon {
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 150px;
+    max-height: 150px;
+    flex-grow: 1;
+    background: no-repeat center/100% url("./img/64x64/day/113.png");
+}
+
+#switcher {
+    display: flex;
+    align-items: start;
+}
+
+
+
+/* The container */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 25px;
+
+}
+
+/* Hide the browser's default radio button */
+.container input {
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    color: #cfcfcf;
+}
+
+/* When the radio button is checked, change font color on black */
+.container input:checked ~ .checkmark {
+    color: #e9e9e9;
+}
+
+/* Add a separating line */
+.line {
+    position: relative;
+    background-color: #e9e9e9;
+    width: 1px;
+    height: 16px;
+    margin: 0 5px;
+}
+
+.small-grey {
+    color: #e9e9e9;
+    line-height: 1.5;
+}
+
+.weather__summary {
+    line-height: 1.2;
+    padding: 10px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+#weather-country {
+    font-size: 26px;
+}
+
+.weather__additional {
+    padding-bottom: 5px;
+    display: flex;
+    opacity: 0;
+}
+
+.additional__container {
+    width: 100%;
+}
+
+.additional__elem {
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border-top: 1px solid rgba(233, 233, 233, 0.5);
+    padding: 0 10px;
+}
+
+.weather__description {
+    flex-grow: 1;
+}
+
+.about {
+    padding: 10px;
+    background-color: rgba(212, 199, 142, 0.6);
+    display: flex;
+    line-height: 1.5;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 0 0 5px 5px;
+    min-width: 200px;
+    position: relative;
+    margin: 0 20px;
+    top: -83px;
+    opacity: 0;
+}
+
+.bookmark__text {
+    width: 50px;
+    height: 40px;
+    padding-top: 10px;
+    text-align: center;
+    background-color: rgba(255, 188, 0, 0.7);
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.25);
+    margin: 0 auto;
+    border-width: 0 25px 25px 25px;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    top: -83px;
+    cursor: pointer;
+}
+
+#loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 5px;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.01);
+    box-shadow: inset 0 0 75px 20px rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+    text-align: center;
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    vertical-align: center;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    border-radius: 50%;
+    border: 6px solid #909090;
+    border-color: #909090 transparent #909090 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+
+a.link, a:visited.link {
+    position: relative;
+    color: #00c3ff;
+}
+
+.link::before,
+.link::after {
+    position: absolute;
+    width: 80%;
+    height: 0.031rem;
+    background: #484848;
+    top: 100%;
+    left: 10%;
+    pointer-events: none;
+}
+
+.link::before {
+    content: '';
+    transform-origin: 50% 100%;
+    transition: clip-path 0.3s, transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
+    clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+}
+
+.link:hover::before {
+    transform: translate3d(0, 2px, 0) scale3d(1.08, 3, 1);
+    clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0, 50% 0, 50% 100%, 50% 100%, 0 100%, 100% 100%, 100% 0%);
+}
+
+.link span {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
+}
+
+.link:hover span {
+    transform: translate3d(0, -2px, 0);
+}
+
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes about-drop-down {
+    0% {
+        top: -83px;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+@keyframes hide-bottom-border-radius {
+    0% {
+        border-radius: 5px;
+    }
+    100% {
+        border-radius: 5px 5px 0 0;
+    }
+}
+
+@keyframes bookmark-increase  {
+    0% {
+        height: 40px;
+    }
+    100% {
+        height: 60px;
+    }
+}
+
+@keyframes bookmark-increase-text {
+    0% {
+        padding-top: 10px;
+    }
+    100% {
+        padding-top: 30px;
+    }
+}
+
+
+@keyframes bookmark-decrease {
+    0% {
+        height: 60px;
+    }
+    100% {
+        height: 0;
+    }
+}
+
+@keyframes bookmark-decrease-text {
+    0% {
+        padding-top: 30px;
+    }
+    100% {
+        padding-top: 10px;
+    }
+}
+
+@keyframes hide-me {
+    0% {
+        opacity: 100;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes show-me {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .weather__temp {
+        flex-wrap: wrap;
+    }
+    .weather__summary {
+        text-align: left;
+    }
+    .weather__additional {
+        flex-direction: column;
+    }
+}
