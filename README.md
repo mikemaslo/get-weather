@@ -1,6 +1,6 @@
 # Get weather
 
-###[Link to live website]()
+### [Link to live website](https://mikemaslo.github.io/get-weather/)
 
 ## Hello! It's my first pet project.
 
