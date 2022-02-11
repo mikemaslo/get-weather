@@ -91,7 +91,7 @@ body {
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
     height: 100%;
     width: 100%;
-    overflow: hidden;
+
 }
 
 figure#night-day {
@@ -169,7 +169,7 @@ figure#night-day {
 }
 
 .wrapper {
-    padding: 20px 0;
+    padding: 50px 0;
     margin: 0 auto;
     max-width: 480px;
     overflow: hidden;
@@ -183,6 +183,12 @@ figure#night-day {
     z-index: 10;
     margin: 0 20px;
     background-color: rgba(0, 0, 0, 0.50);
+}
+
+.weather__by {
+    text-align: center;
+    padding-top: 10px;
+    opacity: 0;
 }
 
 .temp__elem {
@@ -510,3 +516,18 @@ a.link, a:visited.link {
         flex-direction: column;
     }
 }
+
+
+/* testing
+#loader {
+    display: none;
+}
+
+.weather__temp {
+    opacity: 100;
+}
+
+.weather__additional {
+    opacity: 100;
+}
+*/

@@ -29,6 +29,7 @@ let weatherCloud = document.getElementById('weather-cloud')
 let weatherPressure = document.getElementById('weather-pressure')
 let weatherVisibility = document.getElementById('weather-visibility')
 let weatherUvIndex = document.getElementById('weather-uv')
+let weatherBy = document.getElementById('weather-by')
 
 let dataObject = {}
 
@@ -58,48 +59,64 @@ const convertUnix = function (unixTimestamp) {
     return weekday + ' ' + hours + ':' + minutes
 }
 
-function getWeather() {
+
+const getWeather = function(url, weatherByValue) {
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            dataObject = data
+            let locationName = ''
+            if (data.location.region) {
+                locationName = data.location.region
+                    + ', ' + data.location.country
+            } else {
+                locationName = data.location.name
+                    + ', ' + data.location.country
+            }
+            weatherTemp.innerHTML = Math.round(data.current.temp_c)
+            weatherIcon.style.background = getIcon(data.current.condition.icon)
+            weatherCountry.innerHTML = `<h4>${locationName}</h4>`
+            weatherTime.innerHTML = convertUnix(data.location.localtime_epoch)
+            weatherCondition.innerHTML = data.current.condition.text
+            weatherFeels.innerHTML = Math.round(data.current.feelslike_c) + '°C'
+            weatherHumidity.innerHTML = data.current.humidity + ' %'
+            weatherPrecip.innerHTML = data.current.precip_mm + ' mm'
+            weatherWind.innerHTML = data.current.wind_dir + ' ' + convertKphMph(data.current.wind_kph)
+            weatherCloud.innerHTML = data.current.cloud + ' %'
+            weatherPressure.innerHTML = Math.round(data.current.pressure_in) + ' in'
+            weatherVisibility.innerHTML = data.current.vis_km + ' km'
+            weatherUvIndex.innerHTML = data.current.uv
+            weatherBy.innerHTML = 'Current weather by ' + weatherByValue
+        })
+        .then(() => {
+            weatherAdditionalBlock.style.opacity = '100'
+            weatherTempBlock.style.opacity = '100'
+            weatherBy.style.opacity = '100'
+            weatherLoader.style.display = 'none'
+        })
+}
+
+function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successful, error);
     }
 
-    //If error, alert user ...unable to obtain temperature
+
+
+    //If error
     function error(error) {
-        window.alert("Unable to retrieve weather! This might be due to having your location setting turned off on your mobile device " +
-            "or from denying location access on desktop. Please note that if you are using FireFox, that there is currently a bug with " +
-            "geolocation. Please use a different browser! \n\n" + " {Error message: " + error.message + "}");
-        weatherIcon.innerHTML = '<h2>Unable to retrieve weather!</h2>';
+        console.log('Can\'t get the weather because: ' + error.message + ', trying get by IP ');
+        let query = '&q=auto:ip'
+        let url = API_URL + WEATHER_CURRENT + '?key=' + API_KEY + query
+        getWeather(url, 'IP')
     }
 
     function successful(geoLocation) {
         let lat = geoLocation.coords.latitude
         let lon = geoLocation.coords.longitude
-        let query = '&q=' + lat + ',' + lon + lang
+        let query = '&q=' + lat + ',' + lon
         let url = API_URL + WEATHER_CURRENT + '?key=' + API_KEY + query
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                dataObject = data
-                let locationName = data.location.region + ', ' + data.location.country
-                    weatherTemp.innerHTML = Math.round(data.current.temp_c)
-                    weatherIcon.style.background = getIcon(data.current.condition.icon)
-                    weatherCountry.innerHTML = `<h4>${locationName}</h4>`
-                    weatherTime.innerHTML = convertUnix(data.location.localtime_epoch)
-                    weatherCondition.innerHTML = data.current.condition.text
-                    weatherFeels.innerHTML = Math.round(data.current.feelslike_c) + '°C'
-                    weatherHumidity.innerHTML = data.current.humidity + ' %'
-                    weatherPrecip.innerHTML = data.current.precip_mm + ' mm'
-                    weatherWind.innerHTML = data.current.wind_dir + ' ' + convertKphMph(data.current.wind_kph)
-                    weatherCloud.innerHTML = data.current.cloud + ' %'
-                    weatherPressure.innerHTML = Math.round(data.current.pressure_in) + ' in'
-                    weatherVisibility.innerHTML = data.current.vis_km + ' km'
-                    weatherUvIndex.innerHTML = data.current.uv
-            })
-            .then(() => {
-                weatherAdditionalBlock.style.opacity = '100'
-                weatherTempBlock.style.opacity = '100'
-                weatherLoader.style.display = 'none'
-            })
+        getWeather(url, 'location')
     }
 }
 
@@ -142,6 +159,6 @@ const bookmark = function() {
 }
 
 
-getWeather()
 
+getLocation()
 
