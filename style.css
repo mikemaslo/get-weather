@@ -365,6 +365,35 @@ figure#night-day {
     align-items: center;
 }
 
+.loader--alert {
+    display: none;
+    flex-direction: column;
+    font-size: 18px;
+    padding: 0 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader--alert span {
+    margin-bottom: 10px;
+}
+
+.loader--alert button {
+    font-size: 18px;
+    font-weight: 600;
+    color: #cfcfcf;
+    width: 100px;
+    height: 30px;
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #017A5A;
+
+}
+
+.loader--alert button:hover {
+    background-color: #019a72;
+}
+
 .lds-dual-ring {
     display: inline-block;
     width: 80px;

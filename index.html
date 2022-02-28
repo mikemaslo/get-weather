@@ -35,7 +35,12 @@
 <main class="wrapper">
     <div id="weather-main" class="weather">
         <div id="loader">
-            <div class="lds-dual-ring"></div>
+            <div id="loader-ring" class="lds-dual-ring"></div>
+            <div id="loader-alert" class="loader--alert">
+                <span>We couldn't determine your location because your browser or device settings are blocking it.</span>
+                <span>We will try to determine your location by IP, but you can change it later.</span>
+                <button onclick="hideLoader()">Okay</button>
+            </div>
         </div>
         <div id="weather-by" class="weather__by">
             Current weather by IP

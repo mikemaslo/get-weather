@@ -13,6 +13,8 @@ const WEATHER_IPLOOKUP = '/ip.json'
 let lang = '&lang=' + document.documentElement.lang
 
 let weatherLoader = document.getElementById('loader')
+let weatherLoaderRing = document.getElementById('loader-ring')
+let weatherLoaderAlert = document.getElementById('loader-alert')
 let weatherMain = document.getElementById('weather-main')
 let weatherIcon = document.getElementById('weather-icon')
 let weatherTemp = document.getElementById('weather-temp')
@@ -59,6 +61,12 @@ const convertUnix = function (unixTimestamp) {
     return weekday + ' ' + hours + ':' + minutes
 }
 
+const hideLoader = function (){
+    weatherAdditionalBlock.style.opacity = '100'
+    weatherTempBlock.style.opacity = '100'
+    weatherBy.style.opacity = '100'
+    weatherLoader.style.display = 'none'
+}
 
 const getWeather = function(url, weatherByValue) {
     fetch(url)
@@ -88,12 +96,7 @@ const getWeather = function(url, weatherByValue) {
             weatherUvIndex.innerHTML = data.current.uv
             weatherBy.innerHTML = 'Current weather by ' + weatherByValue
         })
-        .then(() => {
-            weatherAdditionalBlock.style.opacity = '100'
-            weatherTempBlock.style.opacity = '100'
-            weatherBy.style.opacity = '100'
-            weatherLoader.style.display = 'none'
-        })
+
 }
 
 function getLocation() {
@@ -101,24 +104,24 @@ function getLocation() {
         navigator.geolocation.getCurrentPosition(successful, error);
     }
 
-
-
-    //If error
-    function error(error) {
-        console.log('Can\'t get the weather because: ' + error.message + ', trying get by IP ');
+    function error() {
+        weatherLoaderRing.style.display = 'none'
+        weatherLoaderAlert.style.display = 'flex'
         let query = '&q=auto:ip'
         let url = API_URL + WEATHER_CURRENT + '?key=' + API_KEY + query
         getWeather(url, 'IP')
     }
 
-    function successful(geoLocation) {
+    async function successful(geoLocation) {
         let lat = geoLocation.coords.latitude
         let lon = geoLocation.coords.longitude
         let query = '&q=' + lat + ',' + lon
         let url = API_URL + WEATHER_CURRENT + '?key=' + API_KEY + query
-        getWeather(url, 'location')
+        await getWeather(url, 'location')
+        await hideLoader()
     }
 }
+
 
 const switcher = function() {
     let fahrenheit = document.getElementById('fahrenheit');
